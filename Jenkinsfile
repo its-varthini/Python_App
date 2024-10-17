@@ -19,5 +19,26 @@ pipeline {
                 sh 'docker build -t varthinidochub/python-quotes:${BUILD_NUMBER} .'
             }
         }
+        
+        stage('Login to Docker Hub') {      	
+            steps{                       	
+            	sh '''
+            	docker login --username=$DOCKERHUB_CREDENTIALS_USR --password=$DOCKERHUB_CREDENTIALS_PSW              		
+            	echo 'Login Completed' 
+            	'''
+            }           
+        }
+        
+        stage('Push the artifacts'){
+           steps{
+                
+                    sh '''
+                    echo 'Push to dockerhub'
+                    docker push varthinidochub/python-quotes:${BUILD_NUMBER}
+                    
+                    '''
+                
+            }
+        }
     }
 }
